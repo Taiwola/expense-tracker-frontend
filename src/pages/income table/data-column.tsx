@@ -1,41 +1,26 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Trash2 } from "lucide-react";
-import { ArrowUpDown } from "lucide-react"
+import { ArrowUpDown, Trash2 } from "lucide-react"
  
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import CustomDropdown from "@/components/customDropdown";
 import { Separator } from "@/components/ui/separator";
-import EditExpensePopover from "@/components/editExpense";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 
- 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Expense = {
-  id: string
-  description: string
-  month: string
-  day: string,
-  year: number,
-  date: string,
-  amount: number
+type Budget = {
+    id: string,
+    year: number,
+    month: string,
+    amount:number
 }
 
 
-export const columns: ColumnDef<Expense>[] = [
+
+
+
+export const columns: ColumnDef<Budget>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -59,17 +44,9 @@ export const columns: ColumnDef<Expense>[] = [
         enableHiding: false,
       },
       {
-        accessorKey: "category",
-        header: "category",
+        accessorKey: "source",
+        header: "source",
       },
-    {
-      accessorKey: "description",
-      header: "description",
-    },
-    {
-      accessorKey: "day",
-      header: "day",
-    },
     {
       accessorKey: "year",
       header: "year",
@@ -98,10 +75,6 @@ export const columns: ColumnDef<Expense>[] = [
       }
     },
     {
-      accessorKey: "date",
-      header: "date",
-    },
-    {
       accessorKey: "amount",
       header: () => <div className="text-right font-bold">Amount</div>,
     cell: ({ row }) => {
@@ -117,15 +90,17 @@ export const columns: ColumnDef<Expense>[] = [
     {
         id: "actions",
         cell: ({ row }) => {
-          const expense = row.original
+          const income = row.original
           const {toast} = useToast()
         
           const handleClick = async () => {
             try {
-              const response = await fetch(`http://localhost:3000/api/expense/${expense.id}`, {
+                const token = sessionStorage.getItem("token");
+              const response = await fetch(`http://localhost:3000/api/income/${income.id}`, {
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
                 },
               });
               const data = await response.json();
@@ -136,9 +111,10 @@ export const columns: ColumnDef<Expense>[] = [
                 });
               }
               toast({
-                title: "Expense deleted",
-                description: "Expense has been deleted successfully",
+                title: "Income deleted",
+                description: "Income has been deleted successfully"
               });
+              window.location.reload();
             } catch (error) {
               toast({
                 title: "Error",
@@ -149,9 +125,9 @@ export const columns: ColumnDef<Expense>[] = [
       return (
           <div >
             <CustomDropdown triggerContent="..." className="absolute top-[100%] left-[87%]">
-              <div className="flex flex-col gap-2">
-              <Link className="text-sm font-semibold " to={`${expense.id}`}>
-              <Button variant={"ghost"}>View Expense</Button>
+              <div className="flex z-50 flex-col gap-2">
+              <Link className="text-sm font-semibold " to={`${income.id}`}>
+              <Button variant={"ghost"}>View Income</Button>
               </Link>
                 <Separator />
                 <AlertDialog>

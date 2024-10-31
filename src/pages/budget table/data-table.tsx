@@ -110,7 +110,7 @@ import {
             placeholder="Filter months..."
             value={(table.getColumn("month")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("description")?.setFilterValue(event.target.value)
+              table.getColumn("month")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />

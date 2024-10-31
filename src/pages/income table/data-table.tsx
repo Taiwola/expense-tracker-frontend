@@ -36,10 +36,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {useQuery} from "react-query";
-import { fetchAllCategories } from "@/api/category/route"
-import LoadingOverlay from "@/components/loading"
-import { Link } from "react-router-dom"
 
 
 interface DataTableProps<TData, TValue> {
@@ -60,7 +56,6 @@ export function DataTable<TData, TValue>({
       const [yearFilter, setYearFilter] = useState<number>();
       const [monthFilter, setMonthFilter] = useState<string>("");
       const [dayFilter, setDayFilter] = useState<string>("");
-      const [categoryFilter, setCategory] = useState<string>("");
   const table = useReactTable({
     data,
     columns,
@@ -95,31 +90,11 @@ export function DataTable<TData, TValue>({
         setDayFilter(filterValue);
         table.getColumn("day")?.setFilterValue(filterValue); // Ensure 'day' is the actual column id
         break;
-      case "category":
-        setCategory(filterValue);
-        table.getColumn("category")?.setFilterValue(filterValue);
-        break;
     }
   };
   
   
-  const {data: categoryData, isLoading, isError} = useQuery("getAllCategories", fetchAllCategories, {
-    retry: false
-  });
-
-
-  if (isLoading) {
-    <LoadingOverlay />
-  }
-
-  if (isError) {
-    <div className="flex h-full flex-col gap-3 justify-center items-center">
-        <p>Error in loading data</p>
-        <Button>
-            <Link to={"/get-started"}>Try to login again</Link>
-        </Button>
-      </div>
-  }
+  
 
   const years = Array.from({ length: 50 }, (_, i) => (new Date().getFullYear() - i).toString());
   const months = [
@@ -142,10 +117,10 @@ export function DataTable<TData, TValue>({
     <div>
          <div className="flex gap-2 items-center py-4">
         <Input
-          placeholder="Filter descriptions..."
-          value={(table.getColumn("description")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter source..."
+          value={(table.getColumn("source")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("description")?.setFilterValue(event.target.value)
+            table.getColumn("source")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -182,37 +157,6 @@ export function DataTable<TData, TValue>({
   </SelectContent>
 </Select>
 
-<Select
-  onValueChange={(value) => handleFilterChange(value === "all" ? "" : value, "day")}
->
-  <SelectTrigger className="w-[100px] border-dotted focus:none">
-    <SelectValue placeholder="Day" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="all">All days</SelectItem> {/* Special value for clearing the filter */}
-    {dayNames.map((day) => (
-      <SelectItem key={day} value={day}>
-        {day}
-      </SelectItem>
-    ))}
-  </SelectContent>
-</Select>
-
-<Select
-  onValueChange={(value) => handleFilterChange(value === "all" ? "" : value, "category")}
->
-  <SelectTrigger className="w-[100px] border-dotted focus:none">
-    <SelectValue placeholder="Category" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="all">Category</SelectItem> {/* Special value for clearing the filter */}
-    {categoryData?.map((c) => (
-      <SelectItem key={c.id} value={c.name}>
-        {c.name}
-      </SelectItem>
-    ))}
-  </SelectContent>
-</Select>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

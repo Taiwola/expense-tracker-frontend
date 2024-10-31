@@ -48,7 +48,7 @@ export default function Expense({}: Props) {
     const amount = e.amount;
     const description = e.description;
     const id = e.id;
-    
+    const category = e.category.name
     // Format the date and time (e.g., "October 22, 2024, 10:30 AM")
     const formattedDate = `${month} ${createdAt.getDate()}, ${year}, ${createdAt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}`;
   
@@ -59,6 +59,7 @@ export default function Expense({}: Props) {
       year: year,
       amount: amount,
       description: description,
+      category: category,
       date: formattedDate // Include the formatted date with time
     };
   });

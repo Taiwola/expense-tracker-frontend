@@ -46,7 +46,7 @@ export enum UserRoles {
 
   export interface Income {
     id: string;
-    amount?: number | null; // Optional since it's nullable in the entity
+    amount: number; // Optional since it's nullable in the entity
     month: string;
     year: number;
     source: string;
