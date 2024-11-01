@@ -39,6 +39,8 @@ export function Piechart({ expenses }: Props) {
     fill: `hsl(${(index * 360) / currentMonthExpenses.length}, 70%, 50%)`,
   }));
 
+  console.log(chartData);
+
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-2">
@@ -125,16 +127,21 @@ export function Piechart({ expenses }: Props) {
             ))}
           </div>
         )}
-        {totalAmount > 0 && (
-          <div className="mt-2 text-sm text-muted-foreground">
-            <span className="font-medium">Insights:</span>
-            <p>
-              {chartData.length === 0
-                ? "No expenses recorded."
-                : `Your top expense this month is ${chartData[0].name}, accounting for ${chartData[0].percentage}% of your total expenses.`}
-            </p>
-          </div>
-        )}
+       {totalAmount > 0 && (
+  <div className="mt-2 text-sm text-muted-foreground">
+    <span className="font-medium">Insights:</span>
+    <p>
+      {chartData.length === 0
+        ? "No expenses recorded."
+        : (() => {
+            // Find the expense with the highest percentage
+            const topExpense = chartData.reduce((max, expense) =>
+              expense.value > max.value ? expense : max);
+            return `Your top expense this month is ${topExpense.name}, accounting for ${topExpense.percentage}% of your total expenses.`;
+          })()}
+    </p>
+  </div>
+)}
       </CardFooter>
     </Card>
   );

@@ -111,7 +111,7 @@ export default function ExpensePopoverContent({ budgets, categories }: Props) {
     };
 
     return (
-        <div className="relative p-8 rounded-lg">
+        <div className="relative p-2 rounded-lg">
             {showpopover && (
                 <Popover open={showpopover} onOpenChange={setShowpopover}>
                     <PopoverTrigger asChild>

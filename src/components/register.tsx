@@ -10,6 +10,8 @@ import { registerRoute } from "@/api/auth/route";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "./ui/toast";
+import {motion} from "framer-motion";
+import {Circle} from "lucide-react"
 
 // Zod schema for form validation
 const registerForm = z.object({
@@ -26,6 +28,7 @@ export type TFormSchema = z.infer<typeof registerForm>;
 export default function Register() {
   const { toast } = useToast();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<TFormSchema>({
     resolver: zodResolver(registerForm),
@@ -71,6 +74,7 @@ export default function Register() {
         className: "border bg-white z-[1000] text-black font-medium dark:bg-black dark:text-white",
       });
     }
+    setLoading(true);
     mutation.mutate(data);
   };
 
@@ -107,7 +111,21 @@ export default function Register() {
           <Checkbox onCheckedChange={() => setAcceptedTerms(!acceptedTerms)} />
           <span>Accept terms and conditions</span>
         </div>
-        <Button className="w-full">Submit</Button>
+        <Button className="w-full">
+        {loading && (
+          <motion.span
+          className="mr-2 h-4 w-4"
+          animate={{ rotate: 360 }}
+          transition={{
+            repeat: Infinity,
+            duration: 1,
+            ease: "linear",
+          }}
+        >
+          <Circle />
+        </motion.span>
+      )}
+          Submit</Button>
       </form>
     </div>
   );

@@ -18,6 +18,12 @@ import ExpensePopoverContent from "@/components/expensePopover";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import LoadingOverlay from "@/components/loading";
 
+// TODO: work on the account, billing page and inner pages
+// TODO: FIX THE POP UP THE TABLE IN THE EXPENSE, INCOME AND BUDGET PAGE
+// TODO: BACKEND TASK: Work on cascade delete for when a budget is deleted, then the expense relating to it should be deleted :DONE
+// TODO: Deploy the Backend and correct the backend URL
+// then deploy the frontend
+
 export default function Dashboard() {
   const { id: userId } = useParams();
 
@@ -64,6 +70,8 @@ export default function Dashboard() {
   const categories: Category[] = user.categories;
   const Income: Income[] = user.incomes;
 
+  sessionStorage.setItem("categories", JSON.stringify(categories));
+
   
 
   const currentYear = new Date().getFullYear();
@@ -80,19 +88,13 @@ export default function Dashboard() {
   // Calculate total income
   const totalIncome = filteredIncomes.reduce((total, inc) => total + (inc.amount || 0), 0);
   
-  // Format the data to have month and amount
-  const monthlyBudgets = Array.from({ length: 12 }, (_, index) => {
-    const month = new Date(0, index).toLocaleString('default', { month: 'long' });
-    const totalBudgetAmount = filteredBudgets
-      .filter(e => new Date(e.createdAt).getMonth() === index) // Filter budgets by month
-      .reduce((acc, budget) => acc + budget.amount, 0); // Sum the budget amounts for that month
   
+  const monthlyBudgets = filteredBudgets.map((b) => {
     return {
-      month,
-      amount: totalBudgetAmount // Total budget amount for that month
-    };
-  }).filter(e => e.amount > 0);
-  
+      month: b.month,
+      amount: b.amount
+    }
+  })
   
   const monthlyExpenses = Array.from({ length: 12 }, (_, index) => {
     const month = new Date(0, index).toLocaleString('default', { month: 'long' }); // Get the month name
@@ -105,6 +107,20 @@ export default function Dashboard() {
       amount: totalAmount // Total expense for that month
     };
   }).filter(e => e.amount > 0); // Optional: Filter out months with 0 total expenses
+
+  const monthlyIncome = Array.from({ length: 12 }, (_, index) => {
+    const month = new Date(0, index).toLocaleString('default', { month: 'long' }); // Get the month name
+    const totalAmount = filteredIncomes
+      .filter(e => new Date(e.createdAt).getMonth() === index) // Filter expenses by month
+      .reduce((acc, income) => acc + income.amount, 0); // Sum the amounts for that month
+  
+    return {
+      month,
+      amount: totalAmount // Total expense for that month
+    };
+  }).filter(e => e.amount > 0);
+
+  console.log("income", monthlyIncome);
   
 
   return (
@@ -210,7 +226,7 @@ export default function Dashboard() {
           {monthlyBudgets.length === 0 && monthlyExpenses.length === 0 ? (
           <p className="text-center flex justify-center items-center text-gray-500">No budget or expense data available for this year.</p>
         ) : (
-          <Barchart budgets={monthlyBudgets} expenses={monthlyExpenses} />
+          <Barchart incomes={monthlyIncome} budgets={monthlyBudgets} expenses={monthlyExpenses} />
         )}
 
           </div>

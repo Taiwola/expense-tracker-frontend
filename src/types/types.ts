@@ -13,6 +13,7 @@ export interface User {
     budgets: Budget[];
     incomes: Income[];
     expenses: Expense[];
+    fullName: string
 }
 
 export enum UserRoles {

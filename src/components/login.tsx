@@ -11,6 +11,8 @@ import { useForm } from "react-hook-form";
 import { ToastAction } from "@radix-ui/react-toast";
 import { loginRoute } from "@/api/auth/route";
 import { useState } from "react";
+import {motion} from "framer-motion";
+import { Circle } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -23,7 +25,8 @@ export default function Login() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false); // State for Remember Me
+  const [rememberMe, setRememberMe] = useState(true); // State for Remember Me
+  const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<TFormLoginSchema>({
     resolver: zodResolver(formSchema),
@@ -67,6 +70,7 @@ export default function Login() {
         className: "border bg-white z-[1000] text-black font-medium dark:bg-black dark:text-white",
       });
     }
+    setLoading(true);
     onMutation.mutate({ ...data }); // Pass "Remember Me" option to the login request
   };
 
@@ -89,10 +93,24 @@ export default function Login() {
           Accept terms and conditions
         </div>
         <div className="flex items-center gap-3">
-          <Checkbox onCheckedChange={() => setRememberMe(!rememberMe)} />
+          <Checkbox checked onCheckedChange={() => setRememberMe(!rememberMe)} />
           Remember Me
         </div>
-        <Button type="submit" className="w-full">Submit</Button>
+        <Button type="submit" disabled={loading} className="w-full">
+        {loading && (
+          <motion.span
+          className="mr-2 h-4 w-4"
+          animate={{ rotate: 360 }}
+          transition={{
+            repeat: Infinity,
+            duration: 1,
+            ease: "linear",
+          }}
+        >
+          <Circle />
+        </motion.span>
+      )}
+          Submit</Button>
       </form>
     </div>
   );

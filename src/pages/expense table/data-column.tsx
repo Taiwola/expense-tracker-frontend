@@ -119,6 +119,7 @@ export const columns: ColumnDef<Expense>[] = [
         cell: ({ row }) => {
           const expense = row.original
           const {toast} = useToast()
+          const token = sessionStorage.getItem("token");
         
           const handleClick = async () => {
             try {
@@ -126,6 +127,7 @@ export const columns: ColumnDef<Expense>[] = [
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
                 },
               });
               const data = await response.json();
@@ -139,6 +141,7 @@ export const columns: ColumnDef<Expense>[] = [
                 title: "Expense deleted",
                 description: "Expense has been deleted successfully",
               });
+              window.location.reload();
             } catch (error) {
               toast({
                 title: "Error",
