@@ -1,6 +1,6 @@
 import { fetchExpense } from '@/api/expense/route';
 import { Expense } from '@/types/types';
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
 const ExpensePage = () => {

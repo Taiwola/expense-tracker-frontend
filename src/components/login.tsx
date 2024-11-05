@@ -32,7 +32,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<TFormLoginSchema>({
     resolver: zodResolver(formSchema),
@@ -41,7 +41,6 @@ export default function Login() {
   const {
     register: forgotPasswordRegister,
     handleSubmit: handleForgotPasswordSubmit,
-    formState: { errors: forgotPasswordErrors },
   } = useForm<TForgotPasswordSchema>({
     resolver: zodResolver(forgotPasswordSchema),
   });

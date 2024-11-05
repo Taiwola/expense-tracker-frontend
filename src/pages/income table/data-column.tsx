@@ -96,7 +96,7 @@ export const columns: ColumnDef<Budget>[] = [
           const handleClick = async () => {
             try {
                 const token = sessionStorage.getItem("token");
-              const response = await fetch(`http://localhost:3000/api/income/${income.id}`, {
+              const response = await fetch(`https://expense-tracker-backend-5spz.onrender.com/api/income/${income.id}`, {
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json",

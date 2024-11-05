@@ -1,4 +1,3 @@
-import Income from "@/pages/income";
 import { Bar, BarChart, CartesianGrid, XAxis, ResponsiveContainer, YAxis, Tooltip } from "recharts";
 
 interface BarchartProps {

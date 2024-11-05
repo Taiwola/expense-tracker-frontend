@@ -5,8 +5,10 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 export default function Billing() {
+     // @ts-ignore
     const [selectedPlan, setSelectedPlan] = useState();
 
+     // @ts-ignore
     const handlePlanSelect = (data:any) => {
         // Logic to update the selected plan in the backend
        

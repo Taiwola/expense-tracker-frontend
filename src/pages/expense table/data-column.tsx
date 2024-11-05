@@ -1,23 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { ArrowUpDown } from "lucide-react"
  
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import CustomDropdown from "@/components/customDropdown";
 import { Separator } from "@/components/ui/separator";
-import EditExpensePopover from "@/components/editExpense";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 
@@ -123,7 +112,7 @@ export const columns: ColumnDef<Expense>[] = [
         
           const handleClick = async () => {
             try {
-              const response = await fetch(`http://localhost:3000/api/expense/${expense.id}`, {
+              const response = await fetch(`https://expense-tracker-backend-5spz.onrender.com/api/expense/${expense.id}`, {
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json",

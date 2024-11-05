@@ -5,6 +5,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider
     style={{
+       // @ts-ignore
         "--sidebar-width": "20rem",
         "--sidebar-width-mobile": "20rem",
       }}

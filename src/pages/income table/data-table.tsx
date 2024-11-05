@@ -53,9 +53,9 @@ export function DataTable<TData, TValue>({
       )
       const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
       const [rowSelection, setRowSelection] = useState({})
-      const [yearFilter, setYearFilter] = useState<number>();
-      const [monthFilter, setMonthFilter] = useState<string>("");
-      const [dayFilter, setDayFilter] = useState<string>("");
+      const [, setYearFilter] = useState<number>();
+      const [, setMonthFilter] = useState<string>("");
+      const [, setDayFilter] = useState<string>("");
   const table = useReactTable({
     data,
     columns,
@@ -103,15 +103,15 @@ export function DataTable<TData, TValue>({
     "November", "December"
   ];
 
-  const dayNames = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
-  ];
+  // const dayNames = [
+  //   "Monday",
+  //   "Tuesday",
+  //   "Wednesday",
+  //   "Thursday",
+  //   "Friday",
+  //   "Saturday",
+  //   "Sunday"
+  // ];
 
   return (
     <div>

@@ -12,10 +12,7 @@ import Account from './pages/account';
 import Expense from './pages/expense';
 import Income from './pages/income';
 import Budget from './pages/budget';
-import ExpensePage from './pages/expensePage';
 import Billing from './pages/billing';
-import BudgetPage from './pages/budgetPage';
-import IncomePage from './pages/incomePage';
 import ProtectedRoute from './auth/protectedRoute';
 import { ResetPassword } from './pages/forgotPassword';
 
