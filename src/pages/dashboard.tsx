@@ -2,7 +2,7 @@ import { Barchart } from "@/components/Barchart";
 import DashboardCard from "@/components/dashboardCard";
 import ExpenseCard from "@/components/expenseCard";
 import { Piechart } from "@/components/pieChart";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getUser } from "@/api/user/route";
 import { Budget, Category, Expense, Income, User } from "@/types/types";
