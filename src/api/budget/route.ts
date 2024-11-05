@@ -1,7 +1,9 @@
 import { TBudgetSchema } from "@/components/budgetPopover";
 
-const API_BASE_URL = "http://localhost:3000";
-
+//const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
+const API_BASE_URL="http://localhost:3000"
+console.log("from budget",API_BASE_URL);
+console.log("from budget2",import.meta.env.VITE_tst);
 export const createBudgetRoute = async (data: TBudgetSchema) => {
     const token = sessionStorage.getItem("token");
     const options = {
@@ -32,8 +34,6 @@ export const createBudgetRoute = async (data: TBudgetSchema) => {
 export const findAllBudgetsForUser = async () => {
     const token = sessionStorage.getItem("token");
     const userId = sessionStorage.getItem("userId");
-
-    console.log(userId);
   
     // Check if token and userId exist
     if (!token || !userId) {

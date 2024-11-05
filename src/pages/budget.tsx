@@ -20,8 +20,6 @@ export default function Budget({}: Props) {
   });
 
 
-  console.log(data);
-
   if (isLoading) {
     <LoadingOverlay />
   }
@@ -51,7 +49,7 @@ export default function Budget({}: Props) {
   });
   
 
-  console.log(budget);
+
   
  
   return (

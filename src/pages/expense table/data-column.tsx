@@ -178,6 +178,7 @@ export const columns: ColumnDef<Expense>[] = [
               </div>
             </CustomDropdown>
         </div>
+
           );
           
         },

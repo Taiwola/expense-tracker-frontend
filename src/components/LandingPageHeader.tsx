@@ -1,6 +1,6 @@
 import {ArrowRight, MenuIcon, X} from "lucide-react";
 import Logo from "@/assets/logo.jpeg";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 
@@ -11,6 +11,8 @@ export const LandPageNavBar = () => {
         setOpen(value)
     }
     const location = useLocation();
+    const userId = sessionStorage.getItem('userId');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (location.pathname !== '/') {
@@ -42,7 +44,15 @@ export const LandPageNavBar = () => {
                     <Link to='#about'>About</Link>
                     <Link to='#feature'>Feature</Link>
                     <Link to='#contact'>Contact us</Link>
-                    <Button onClick={() =>  window.location.replace('/get-started')} className="tracking-tight font-medium">Get for free</Button>
+                    {userId ? (
+        <Button onClick={() => navigate(`/dashboard/${userId}`)} className="tracking-tight font-medium">
+          Dashboard
+        </Button>
+      ) : (
+        <Button onClick={() => navigate('/get-started')} className="tracking-tight font-medium">
+          Get for free
+        </Button>
+      )}
                 </nav>
                 </div>
                 {open ?
@@ -54,7 +64,15 @@ export const LandPageNavBar = () => {
                  <Link to='#about'>About</Link>
                  <Link to='#feature'>Feature</Link>
                  <Link to='#contact'>Contact us</Link>
-                 <Button onClick={() =>  window.location.replace('/get-started')}  className="tracking-tight font-medium">Get for free</Button>
+                 {userId ? (
+        <Button onClick={() => navigate(`/dashboard/${userId}`)} className="tracking-tight font-medium">
+          Dashboard
+        </Button>
+      ) : (
+        <Button onClick={() => navigate('/get-started')} className="tracking-tight font-medium">
+          Get for free
+        </Button>
+      )}
                  </nav>
              </div> : null }
             </div>

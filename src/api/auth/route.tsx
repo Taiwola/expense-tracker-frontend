@@ -1,5 +1,6 @@
 import { TFormLoginSchema } from "@/components/login";
 import { TFormSchema } from "@/components/register";
+import { TResetPassword } from "@/pages/forgotPassword";
 
 const API_BASE_URL = "http://localhost:3000";
 
@@ -52,4 +53,45 @@ export  const loginRoute = async ({email, password}: TFormLoginSchema) => {
     sessionStorage.setItem("token", token);
     sessionStorage.setItem("refreshToken", refreshToken);
     return data;
+}
+
+
+export const forgotPassword = async (data: any) => {
+    const res = await fetch(`${API_BASE_URL}/api/auth/forgot-password`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    const response = await res.json();
+
+    if (!res.ok) throw new Error(response.message);
+    return {
+        message: "Check your mail to reset your password"
+    }
+}
+
+export const resetPasswordRoute = async (data: any) => {
+    const options = {
+        token: data.token, newPassword:data.newPassword
+    };
+
+    console.log("from: ", data.token)
+
+    const res = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(options)
+    });
+
+    const response = await res.json();
+
+    if (!res.ok)
+        throw new Error(response.message);
+
+    return response;
 }

@@ -9,7 +9,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
   } from "@/components/ui/sidebar";
-  import { Calendar, BanknoteIcon, ChevronDown, ChevronUp, HelpCircle, ScanTextIcon, Home, Wallet2Icon, User2, } from "lucide-react"
+  import { Calendar, BanknoteIcon, ChevronDown, Bell,ChevronUp, HelpCircle, ScanTextIcon, Home, Wallet2Icon, User2, } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
 import { Link } from "react-router-dom";
@@ -57,6 +57,10 @@ const items = [
     url: `/dashboard/${userSession.data.id}/expense`,
     icon: BanknoteIcon,
   },
+  {
+    title: "Notification",
+    icon: Bell
+  }
 ]
 
 
@@ -66,8 +70,10 @@ const signout = () => {
 
   if (isPersistent) {
     localStorage.removeItem("userSession"); // For persistent session
+    sessionStorage.removeItem("userId");
   } else {
     sessionStorage.removeItem("userSession"); // For temporary session
+    sessionStorage.removeItem("userId");
   }
   
   // Show toast notification

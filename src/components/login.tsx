@@ -9,27 +9,41 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
 import { ToastAction } from "@radix-ui/react-toast";
-import { loginRoute } from "@/api/auth/route";
+import { forgotPassword, loginRoute } from "@/api/auth/route";
 import { useState } from "react";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import { Circle } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 const formSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6, "Password must be at least 6 characters long"), // Example additional validation
+  password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 
+const forgotPasswordSchema = z.object({
+  email: z.string().email()
+})
+
 export type TFormLoginSchema = z.infer<typeof formSchema>;
+export type TForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
 
 export default function Login() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true); // State for Remember Me
+  const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<TFormLoginSchema>({
     resolver: zodResolver(formSchema),
+  });
+
+  const {
+    register: forgotPasswordRegister,
+    handleSubmit: handleForgotPasswordSubmit,
+    formState: { errors: forgotPasswordErrors },
+  } = useForm<TForgotPasswordSchema>({
+    resolver: zodResolver(forgotPasswordSchema),
   });
 
   const onMutation = useMutation(loginRoute, {
@@ -41,11 +55,10 @@ export default function Login() {
         className: "border text-black font-medium dark:bg-black dark:text-white",
       });
 
-      // Set session storage based on "Remember Me"
       if (rememberMe) {
-        localStorage.setItem("userSession", JSON.stringify(data)); // Save in localStorage for persistent session
+        localStorage.setItem("userSession", JSON.stringify(data));
       } else {
-        sessionStorage.setItem("userSession", JSON.stringify(data)); // Save in sessionStorage for temporary session
+        sessionStorage.setItem("userSession", JSON.stringify(data));
       }
 
       reset();
@@ -53,7 +66,7 @@ export default function Login() {
     },
     onError: async (error: Error) => {
       toast({
-        variant: "destructive", // Use a different variant for errors
+        variant: "destructive",
         title: "Error",
         description: error.message,
         className: "bg-red-400 text-white font-medium",
@@ -63,6 +76,60 @@ export default function Login() {
     },
   });
 
+  const forgotPasswordMutate = useMutation(forgotPassword, {
+    onSuccess: async (data:any) => {
+      toast({
+        variant: "default",
+        title: "Forgot Password",
+        description: data.message,
+        className: "border text-black font-medium dark:bg-black dark:text-white",
+      });
+    },
+    onError: async (error: Error) => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+        className: "bg-red-400 text-white font-medium",
+        action: <ToastAction altText="Try again" className="hover:bg-red-400">Try again</ToastAction>,
+      });
+    },
+  });
+
+  const handleForgotPassword = async (data: any) => {
+    forgotPasswordMutate.mutate(data);
+  }
+
+
+  //   onSuccess: () => {
+  //     toast({
+  //       title: "Forgot Password",
+  //       description: "Password reset link sent to your email",
+  //       className: "border text-black font-medium dark:bg-black dark:text-white",
+  //     });
+  //   },
+  //   onError: (error: Error) => {
+  //     toast({
+  //       variant: "destructive",
+  //       title: "Error",
+  //       description: error.message,
+  //       className: "bg-red-400 text-white font-medium",
+  //     });
+  //   },
+  // });
+
+  // const handleForgotPassword = () => {
+  //   const email = watch("email");
+  //   if (email) {
+  //     forgotPasswordMutation.mutate({ email });
+  //   } else {
+  //     toast({
+  //       description: "Please enter your email address to reset your password.",
+  //       className: "border bg-white z-[1000] text-black font-medium dark:bg-black dark:text-white",
+  //     });
+  //   }
+  // };
+
   const onSubmit = (data: TFormLoginSchema) => {
     if (!acceptedTerms) {
       return toast({
@@ -71,7 +138,7 @@ export default function Login() {
       });
     }
     setLoading(true);
-    onMutation.mutate({ ...data }); // Pass "Remember Me" option to the login request
+    onMutation.mutate({ ...data });
   };
 
   return (
@@ -93,24 +160,49 @@ export default function Login() {
           Accept terms and conditions
         </div>
         <div className="flex items-center gap-3">
-          <Checkbox checked onCheckedChange={() => setRememberMe(!rememberMe)} />
+          <Checkbox checked={rememberMe} onCheckedChange={() => setRememberMe(!rememberMe)} />
           Remember Me
         </div>
-        <Button type="submit" disabled={loading} className="w-full">
-        {loading && (
-          <motion.span
-          className="mr-2 h-4 w-4"
-          animate={{ rotate: 360 }}
-          transition={{
-            repeat: Infinity,
-            duration: 1,
-            ease: "linear",
-          }}
-        >
-          <Circle />
-        </motion.span>
-      )}
-          Submit</Button>
+        <div className="mt-2">
+        <Popover>
+          <PopoverTrigger asChild>
+            <button type="button" className="text-sm text-blue-500 underline hover:text-blue-700">
+              Forgot password?
+            </button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <form
+              className="flex flex-col gap-2"
+              onSubmit={handleForgotPasswordSubmit(handleForgotPassword)}
+            >
+              <Label htmlFor="forgotEmail">Enter your email</Label>
+              <Input
+                id="forgotEmail"
+                placeholder="Enter Your Email"
+                type="email"
+                {...forgotPasswordRegister("email")}
+              />
+              <Button type="submit" className="mt-2">Send Reset Link</Button>
+            </form>
+          </PopoverContent>
+          </Popover>
+        </div>
+        <Button type="submit" disabled={onMutation.isLoading} className="w-full">
+          {onMutation.isLoading && (
+            <motion.span
+              className="mr-2 h-4 w-4"
+              animate={{ rotate: 360 }}
+              transition={{
+                repeat: Infinity,
+                duration: 1,
+                ease: "linear",
+              }}
+            >
+              <Circle />
+            </motion.span>
+          )}
+          Submit
+        </Button>
       </form>
     </div>
   );

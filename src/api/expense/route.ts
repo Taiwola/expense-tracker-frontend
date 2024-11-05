@@ -81,7 +81,7 @@ export const fetchExpense = async(expenseId: string) => {
   const expenseData = await response.json();
 
   if (!response.ok) {
-    throw new Error(expenseData.message);
+    throw new Error(expenseData.message || "Failed to fetch expense data");
   }
 
   return expenseData.data;

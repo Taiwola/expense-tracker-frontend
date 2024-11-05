@@ -2,7 +2,7 @@ import { Barchart } from "@/components/Barchart";
 import DashboardCard from "@/components/dashboardCard";
 import ExpenseCard from "@/components/expenseCard";
 import { Piechart } from "@/components/pieChart";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getUser } from "@/api/user/route";
 import { Budget, Category, Expense, Income, User } from "@/types/types";
@@ -200,9 +200,9 @@ export default function Dashboard() {
           <DashboardCard title="Expenses" amount={totalExpenses} description="Note: This represents your total accumulated expenses for the year." />
           <DashboardCard title="Income" amount={totalIncome} description="Note: This represents your total accumulated income for the year." />
           {expenses.slice(0,2).map((expense) => (
-            <Link key={expense.id} to={`expense/${expense.id}`}>
+           
               <ExpenseCard title={expense.description as string} price={expense.amount as number} value={expense.amount as number} maxValue={totalBudget} />
-            </Link>
+           
           ))}
           <div>
         {   expenses.length > 0 ?     <Link to="expense" className="flex">

@@ -17,6 +17,7 @@ import Billing from './pages/billing';
 import BudgetPage from './pages/budgetPage';
 import IncomePage from './pages/incomePage';
 import ProtectedRoute from './auth/protectedRoute';
+import { ResetPassword } from './pages/forgotPassword';
 
 const userSessionString = localStorage.getItem("userSession") || sessionStorage.getItem("userSession");
 
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "/get-started",
     element: <GetStarted />
+  },
+  {
+    path: "/forgotpassword/:token",
+    element: <ResetPassword />
   },
   {
     path: '/dashboard/:id',
@@ -90,30 +95,30 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     </Layout>
   },
-  {
-    path: `/dashboard/:userId/expense/:id`,
-    element: <Layout>
-      <ProtectedRoute>
-      <ExpensePage />
-      </ProtectedRoute>
-    </Layout>
-  },
-  {
-    path: `/dashboard/:userId/budget/:id`,
-    element: <Layout>
-      <ProtectedRoute>
-      <BudgetPage />
-      </ProtectedRoute>
-    </Layout>
-  },
-  {
-    path: `/dashboard/:userId/income/:id`,
-    element: <Layout>
-      <ProtectedRoute>
-      <IncomePage />
-      </ProtectedRoute>
-    </Layout>
-  },
+  // {
+  //   path: `/dashboard/:userId/expense/:id`,
+  //   element: <Layout>
+  //     <ProtectedRoute>
+  //     <ExpensePage />
+  //     </ProtectedRoute>
+  //   </Layout>
+  // },
+  // {
+  //   path: `/dashboard/:userId/budget/:id`,
+  //   element: <Layout>
+  //     <ProtectedRoute>
+  //     <BudgetPage />
+  //     </ProtectedRoute>
+  //   </Layout>
+  // },
+  // {
+  //   path: `/dashboard/:userId/income/:id`,
+  //   element: <Layout>
+  //     <ProtectedRoute>
+  //     <IncomePage />
+  //     </ProtectedRoute>
+  //   </Layout>
+  // },
   {
     path: `/dashboard/:id/upgrade`,
     element: <Layout>
