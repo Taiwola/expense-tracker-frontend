@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://expense-tracker-backend-5spz.onrender.com";
 const token = sessionStorage.getItem("token");
 
 const headers = {

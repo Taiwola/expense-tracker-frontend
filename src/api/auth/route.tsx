@@ -1,8 +1,7 @@
 import { TFormLoginSchema } from "@/components/login";
 import { TFormSchema } from "@/components/register";
-import { TResetPassword } from "@/pages/forgotPassword";
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://expense-tracker-backend-5spz.onrender.com";
 
 export const registerRoute = async ({email, password, first_name, last_name}: TFormSchema) => {
     const options = {

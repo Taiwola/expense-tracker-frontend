@@ -1,7 +1,7 @@
 import { TCategorySchema } from "@/components/categoryPopover";
 import { Category } from "@/types/types";
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://expense-tracker-backend-5spz.onrender.com";
 
 export const createCategoryRoute = async (data: TCategorySchema) => {
     const token = sessionStorage.getItem("token");

@@ -1,9 +1,7 @@
 import { TBudgetSchema } from "@/components/budgetPopover";
 
 //const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
-const API_BASE_URL="http://localhost:3000"
-console.log("from budget",API_BASE_URL);
-console.log("from budget2",import.meta.env.VITE_tst);
+const API_BASE_URL="https://expense-tracker-backend-5spz.onrender.com"
 export const createBudgetRoute = async (data: TBudgetSchema) => {
     const token = sessionStorage.getItem("token");
     const options = {
